@@ -3,7 +3,10 @@
 # Gera libFNA3D e libFAudio linkadas ao SDL2 em /out.
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
-apt-get update
+# bullseye saiu de suporte: usa o arquivo historico do Debian
+rm -f /etc/apt/sources.list.d/*
+echo "deb http://archive.debian.org/debian bullseye main" > /etc/apt/sources.list
+apt-get -o Acquire::Check-Valid-Until=false update
 apt-get install -y --no-install-recommends build-essential cmake git ca-certificates libsdl2-dev pkg-config
 
 TAG="${FNA_TAG:-26.06}"   # mesma versao das libs do port (libFNA3D.so.0.26.06)
