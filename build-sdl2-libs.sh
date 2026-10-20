@@ -5,8 +5,13 @@ set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 # bullseye saiu de suporte: usa o arquivo historico do Debian
 rm -f /etc/apt/sources.list.d/*
-echo "deb http://archive.debian.org/debian bullseye main" > /etc/apt/sources.list
+cat > /etc/apt/sources.list <<'EOL'
+deb http://archive.debian.org/debian bullseye main
+deb http://archive.debian.org/debian bullseye-updates main
+deb http://archive.debian.org/debian-security bullseye-security main
+EOL
 apt-get -o Acquire::Check-Valid-Until=false update
+apt-get -y --no-install-recommends dist-upgrade
 apt-get install -y --no-install-recommends build-essential cmake git ca-certificates libsdl2-dev pkg-config
 
 TAG="${FNA_TAG:-26.06}"   # mesma versao das libs do port (libFNA3D.so.0.26.06)
